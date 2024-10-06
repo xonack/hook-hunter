@@ -23,9 +23,8 @@ export default function Home() {
     const processedListID = listID.includes('x.com/i/lists/') 
       ? listID.split('/').pop() 
       : listID
-
     const endDate = new Date()
-    let startDate = new Date()
+    const startDate = new Date()
 
     switch (timePeriod) {
       case '1 Day':
