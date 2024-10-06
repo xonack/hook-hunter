@@ -7,6 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tweet } from 'rettiwt-api'
 import { TweetTable } from '@/components/TweetTable'
 
+import ConvertKitForm from 'convertkit-react'
+
+const formId = '7200453'
+
 export default function Home() {
   const [listID, setListID] = useState('')
   const [minLikes, setMinLikes] = useState('')
@@ -68,7 +72,7 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">Hook Hunter</h1>
+      <h1 className="text-6xl font-bold mb-32 text-center">Hook Hunter</h1>
       <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 justify-center items-end mb-8">
         <Input
           placeholder="List ID"
@@ -97,6 +101,7 @@ export default function Home() {
           {isLoading ? 'Searching...' : 'Search'}
         </Button>
       </div>
+      
       {error && <p className="text-red-500 text-center">{error}</p>}
       {tweets.length > 0 && (
         <div className="mt-8">
@@ -104,6 +109,13 @@ export default function Home() {
           <TweetTable tweets={tweets} />
         </div>
       )}
+      <h2 className="text-xl font-semibold text-center mb-4 pt-48">The best hooks - straight to your inbox.</h2>
+      <div className="flex items-center justify-center pt-4">
+        <ConvertKitForm 
+        formId={formId}
+        template="clare"
+         />
+      </div>
     </main>
   )
 }
