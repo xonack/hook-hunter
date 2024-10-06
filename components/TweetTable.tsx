@@ -12,17 +12,25 @@ interface TweetTableProps {
 type SortKey = 'fullText' | 'tweetBy.userName' | 'createdAt' | 'likeCount' | 'retweetCount' | 'viewCount' | 'replyCount';
 type SortOrder = 'asc' | 'desc';
 
+type SortableValue = string | number | Date;
+
 export function TweetTable({ tweets }: TweetTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>('createdAt');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
   const sortedTweets = [...tweets].sort((a, b) => {
-    let aValue: any = a[sortKey as keyof Tweet];
-    let bValue: any = b[sortKey as keyof Tweet];
+    let aValue: SortableValue;
+    let bValue: SortableValue;
 
     if (sortKey === 'tweetBy.userName') {
       aValue = a.tweetBy.userName;
       bValue = b.tweetBy.userName;
+    } else if (sortKey === 'createdAt') {
+      aValue = new Date(a.createdAt);
+      bValue = new Date(b.createdAt);
+    } else {
+      aValue = a[sortKey];
+      bValue = b[sortKey];
     }
 
     if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
