@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { Rettiwt, TweetFilter } from 'rettiwt-api';
+import { Rettiwt, Tweet, TweetFilter } from 'rettiwt-api';
+
 
 export async function POST(request: Request) {
   const { listID, minLikes, startDate, endDate } = await request.json();
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
 
   try {
     let nextData = '';
-    const tweetsList = [];
+    const tweetsList: Tweet[] = [];
     while (tweetsList.length < 20) {
       const tweets = await rettiwt.tweet.search(filter, 20, nextData);
       nextData = tweets.next.value;
