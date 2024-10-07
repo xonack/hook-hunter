@@ -3,20 +3,25 @@ import { Rettiwt, Tweet, TweetFilter } from 'rettiwt-api';
 
 
 export async function POST(request: Request) {
-  const { listID, minLikes, startDate, endDate } = await request.json();
+  const { listID, minLikes, startDate, endDate, words } = await request.json();
+
+  console.log(listID, minLikes, startDate, endDate, words);
 
   if (!process.env.TWITTER_API_KEY) {
     return NextResponse.json({ error: 'Twitter API key is not set' }, { status: 500 });
   }
 
-  const rettiwt = new Rettiwt({ apiKey: process.env.TWITTER_API_KEY });
+  const rettiwt = new Rettiwt({
+      apiKey: process.env.TWITTER_API_KEY,
+  });
 
   const filter: TweetFilter = {
-    list: listID,
-    minLikes: parseInt(minLikes),
+    ...(listID !== '' && { list: listID }),
+    ...(minLikes !== '' && { minLikes: parseInt(minLikes) }),
     startDate: new Date(startDate),
     endDate: new Date(endDate),
     replies: false,
+    includeWords: words,
   };
 
   try {
@@ -31,9 +36,11 @@ export async function POST(request: Request) {
       }
     }
     console.log(tweetsList);
-    return NextResponse.json({ tweets: tweetsList });
+    // Filter tweets based on minLikes
+    const filteredTweets = tweetsList.filter(tweet => tweet.likeCount >= parseInt(minLikes));
+    return NextResponse.json({ tweets: filteredTweets });
   } catch (error) {
     console.error('Error fetching tweets:', error);
-    return NextResponse.json({ error: 'Failed to fetch tweets' }, { status: 500 });
+    return NextResponse.json({ message: 'Error fetching tweets' }, { status: 500 });
   }
 }

@@ -12,6 +12,7 @@ import ConvertKitForm from 'convertkit-react'
 const formId = '7200453'
 
 export default function Home() {
+  const [keywords, setKeywords] = useState('')
   const [listID, setListID] = useState('')
   const [minLikes, setMinLikes] = useState('')
   const [timePeriod, setTimePeriod] = useState('1 Day')
@@ -42,6 +43,10 @@ export default function Home() {
         break
     }
 
+    // Split keywords by space and filter out empty strings
+    const keywordArray = keywords.split(' ').filter(word => word.trim() !== '')
+    .map(word => word.replace(/,/g, ''))
+
     try {
       const response = await fetch('/api/tweets', {
         method: 'POST',
@@ -53,6 +58,7 @@ export default function Home() {
           minLikes,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
+          words: keywordArray,
         }),
       })
 
@@ -74,6 +80,12 @@ export default function Home() {
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-6xl font-bold mb-32 text-center">Hook Hunter</h1>
       <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 justify-center items-end mb-8">
+        <Input
+          placeholder="Keywords"
+          value={keywords}
+          onChange={(e) => setKeywords(e.target.value)}
+          className="md:w-1/4"
+        />
         <Input
           placeholder="X List ID"
           value={listID}
