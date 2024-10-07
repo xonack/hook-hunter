@@ -6,12 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tweet } from 'rettiwt-api'
 import { TweetTable } from '@/components/TweetTable'
-
-import ConvertKitForm from 'convertkit-react'
-
-const formId = '7200453'
+import { EmailCapture } from '@/components/EmailCapture'
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [keywords, setKeywords] = useState('')
   const [listID, setListID] = useState('')
   const [minLikes, setMinLikes] = useState('')
@@ -79,55 +77,55 @@ export default function Home() {
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-6xl font-bold mb-32 text-center">Hook Hunter</h1>
-      <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 justify-center items-end mb-8">
-        <Input
-          placeholder="Keywords"
-          value={keywords}
-          onChange={(e) => setKeywords(e.target.value)}
-          className="md:w-1/4"
-        />
-        <Input
-          placeholder="X List ID"
-          value={listID}
-          onChange={(e) => setListID(e.target.value)}
-          className="md:w-1/4"
-        />
-        <Input
-          placeholder="Min Likes"
-          type="number"
-          value={minLikes}
-          onChange={(e) => setMinLikes(e.target.value)}
-          className="md:w-36"
-        />
-        <Select value={timePeriod} onValueChange={setTimePeriod}>
-          <SelectTrigger className="md:w-48">
-            <SelectValue placeholder="Select time period" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1 Day">1 Day</SelectItem>
-            <SelectItem value="7 Days">7 Days</SelectItem>
-            <SelectItem value="21 Days">21 Days</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button onClick={handleSearch} disabled={isLoading}>
-          {isLoading ? 'Searching...' : 'Search'}
-        </Button>
-      </div>
       
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      {tweets.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Search Results</h2>
-          <TweetTable tweets={tweets} />
-        </div>
+      {!isLoggedIn ? (
+        <EmailCapture onSuccess={() => setIsLoggedIn(true)} />
+      ) : (
+        <>
+          <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 justify-center items-end mb-8">
+            <Input
+              placeholder="Keywords"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              className="md:w-1/4"
+            />
+            <Input
+              placeholder="X List ID"
+              value={listID}
+              onChange={(e) => setListID(e.target.value)}
+              className="md:w-1/4"
+            />
+            <Input
+              placeholder="Min Likes"
+              type="number"
+              value={minLikes}
+              onChange={(e) => setMinLikes(e.target.value)}
+              className="md:w-36"
+            />
+            <Select value={timePeriod} onValueChange={setTimePeriod}>
+              <SelectTrigger className="md:w-48">
+                <SelectValue placeholder="Select time period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1 Day">1 Day</SelectItem>
+                <SelectItem value="7 Days">7 Days</SelectItem>
+                <SelectItem value="21 Days">21 Days</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button onClick={handleSearch} disabled={isLoading}>
+              {isLoading ? 'Searching...' : 'Search'}
+            </Button>
+          </div>
+          
+          {error && <p className="text-red-500 text-center">{error}</p>}
+          {tweets.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold mb-4">Search Results</h2>
+              <TweetTable tweets={tweets} />
+            </div>
+          )}
+        </>
       )}
-      {/* <h2 className="text-xl font-semibold text-center mb-4 pt-36">BONUS:The best X hooks - straight to your inbox.</h2>
-      <div className="flex items-center justify-center pt-4">
-        <ConvertKitForm 
-        formId={formId}
-        template="clare"
-         />
-      </div> */}
     </main>
   )
 }
