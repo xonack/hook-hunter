@@ -37,7 +37,9 @@ export async function POST(request: Request) {
     }
     console.log(tweetsList);
     // Filter tweets based on minLikes
-    const filteredTweets = tweetsList.filter(tweet => tweet.likeCount >= parseInt(minLikes));
+    const minLikesValue = minLikes === '' ? 0 : parseInt(minLikes);
+    const filteredTweets = tweetsList.filter(tweet => tweet.likeCount >= minLikesValue);
+    console.log(filteredTweets);
     return NextResponse.json({ tweets: filteredTweets });
   } catch (error) {
     console.error('Error fetching tweets:', error);
