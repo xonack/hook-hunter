@@ -121,13 +121,13 @@ export default function Home() {
           <TweetTable tweets={tweets} />
         </div>
       )}
-      <h2 className="text-xl font-semibold text-center mb-4 pt-36">BONUS:The best X hooks - straight to your inbox.</h2>
+      {/* <h2 className="text-xl font-semibold text-center mb-4 pt-36">BONUS:The best X hooks - straight to your inbox.</h2>
       <div className="flex items-center justify-center pt-4">
         <ConvertKitForm 
         formId={formId}
         template="clare"
          />
-      </div>
+      </div> */}
     </main>
   )
 }
