@@ -28,21 +28,32 @@ export async function POST(request: Request) {
     let nextData = '';
     const tweetsList: Tweet[] = [];
     while (tweetsList.length < 20) {
-      const tweets = await rettiwt.tweet.search(filter, 20, nextData);
-      nextData = tweets.next.value;
-      tweetsList.push(...tweets.list);
-      if (tweets.next.value === null || tweets.list.length === 0) {
+      try {
+        const tweets = await rettiwt.tweet.search(filter, 20, nextData);
+        nextData = tweets.next.value;
+        tweetsList.push(...tweets.list);
+        if (tweets.next.value === null || tweets.list.length === 0) {
+          break;
+        }
+      } catch (searchError) {
+        console.error('Error in tweet search:', searchError);
         break;
       }
     }
-    console.log(tweetsList);
+    console.log('Fetched tweets:', tweetsList.length);
+    
     // Filter tweets based on minLikes
     const minLikesValue = minLikes === '' ? 0 : parseInt(minLikes);
     const filteredTweets = tweetsList.filter(tweet => tweet.likeCount >= minLikesValue);
-    console.log(filteredTweets);
+    console.log('Filtered tweets:', filteredTweets.length);
+    
     return NextResponse.json({ tweets: filteredTweets });
   } catch (error) {
     console.error('Error fetching tweets:', error);
-    return NextResponse.json({ message: 'Error fetching tweets' }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ message: 'Error fetching tweets', error: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ message: 'Error fetching tweets', error: 'Unknown error' }, { status: 500 });
+    }
   }
 }
