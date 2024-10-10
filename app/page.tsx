@@ -1,12 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tweet } from 'rettiwt-api'
 import { TweetTable } from '@/components/TweetTable'
 import { EmailCapture } from '@/components/EmailCapture'
+
+// Helper functions
+function getCookie(name: string): string | null {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+  return null
+}
+
+function isValidEmail(email: string | null): boolean {
+  if (!email) return false
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -17,6 +31,13 @@ export default function Home() {
   const [tweets, setTweets] = useState<Tweet[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const userEmail = getCookie('userEmail')
+    if (isValidEmail(userEmail)) {
+      setIsLoggedIn(true)
+    }
+  }, [])
 
   const handleSearch = async () => {
     setIsLoading(true)

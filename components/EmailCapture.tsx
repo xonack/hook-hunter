@@ -29,9 +29,12 @@ export function EmailCapture({ onSuccess }: EmailCaptureProps) {
         throw new Error('Failed to subscribe');
       }
 
+      // Save email to cookies
+      document.cookie = `userEmail=${email}; path=/; max-age=31536000; SameSite=Strict`;
+
       onSuccess();
     } catch (err) {
-      setError('An error occurred while subscribing. Please try again.');
+      setError('An error occurred while logging in. Please try again.');
       console.error(err);
     } finally {
       setIsLoading(false);
