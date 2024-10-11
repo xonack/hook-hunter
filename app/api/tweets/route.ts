@@ -15,8 +15,10 @@ export async function POST(request: Request) {
       apiKey: process.env.TWITTER_API_KEY,
   });
 
+  const listIDValue = listID === '' ? '1782987441475039605' : listID;
+
   const filter: TweetFilter = {
-    ...(listID !== '' && { list: listID }),
+    ...(listIDValue !== '' && { list: listIDValue }),
     ...(minLikes !== '' && { minLikes: parseInt(minLikes) }),
     startDate: new Date(startDate),
     endDate: new Date(endDate),

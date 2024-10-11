@@ -43,7 +43,6 @@ export default function Home() {
     setIsLoading(true)
     setError('')
 
-    // Process the listID if it's a URL
     const processedListID = listID.includes('x.com/i/lists/') 
       ? listID.split('/').pop() 
       : listID
