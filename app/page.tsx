@@ -59,6 +59,9 @@ export default function Home() {
       case '21 Days':
         startDate.setDate(endDate.getDate() - 21)
         break
+      case '1 Year':
+        startDate.setFullYear(endDate.getFullYear() - 1)
+        break
     }
 
     // Split keywords by space and filter out empty strings
@@ -130,6 +133,7 @@ export default function Home() {
                 <SelectItem value="1 Day">1 Day</SelectItem>
                 <SelectItem value="7 Days">7 Days</SelectItem>
                 <SelectItem value="21 Days">21 Days</SelectItem>
+                <SelectItem value="1 Year">1 Year</SelectItem>
               </SelectContent>
             </Select>
             <Button onClick={handleSearch} disabled={isLoading}>

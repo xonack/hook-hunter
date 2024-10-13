@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       apiKey: process.env.TWITTER_API_KEY,
   });
 
+  // if default serach is used (listId is empty and words is empty) use Great Creator listId
   const listIDValue = (listID === '' && words.length === 0) ? '1782987441475039605' : listID;
 
   const filter: TweetFilter = {
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
   try {
     let nextData = '';
     const tweetsList: Tweet[] = [];
-    while (tweetsList.length < 20) {
+    while (tweetsList.length < 100) {
       try {
         const tweets = await rettiwt.tweet.search(filter, 20, nextData);
         nextData = tweets.next.value;
