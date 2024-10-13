@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       apiKey: process.env.TWITTER_API_KEY,
   });
 
-  const listIDValue = listID === '' ? '1782987441475039605' : listID;
+  const listIDValue = (listID === '' && words.length === 0) ? '1782987441475039605' : listID;
 
   const filter: TweetFilter = {
     ...(listIDValue !== '' && { list: listIDValue }),
