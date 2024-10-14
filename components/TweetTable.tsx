@@ -59,9 +59,7 @@ export function TweetTable({ tweets }: TweetTableProps) {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[300px]">
-            <Button variant="ghost" onClick={() => handleSort('fullText')}>
-              Tweet <SortIcon columnKey="fullText" />
-            </Button>
+              Tweet
           </TableHead>
           <TableHead>
             <Button variant="ghost" onClick={() => handleSort('likeCount')}>
