@@ -3,10 +3,18 @@
 import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tweet } from 'rettiwt-api'
 import { TweetTable } from '@/components/TweetTable'
 import { EmailCapture } from '@/components/EmailCapture'
+import { Calendar } from "@/components/ui/calendar"
+import { addDays, subDays, format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 // Helper functions
 function getCookie(name: string): string | null {
@@ -27,7 +35,8 @@ export default function Home() {
   const [keywords, setKeywords] = useState('')
   const [listID, setListID] = useState('')
   const [minLikes, setMinLikes] = useState('')
-  const [timePeriod, setTimePeriod] = useState('1 Day')
+  const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 7))
+  const [endDate, setEndDate] = useState<Date>(new Date())
   const [tweets, setTweets] = useState<Tweet[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -46,26 +55,6 @@ export default function Home() {
     const processedListID = listID.includes('x.com/i/lists/') 
       ? listID.split('/').pop() 
       : listID
-    const endDate = new Date()
-    const startDate = new Date()
-
-    switch (timePeriod) {
-      case '1 Day':
-        startDate.setDate(endDate.getDate() - 1)
-        break
-      case '7 Days':
-        startDate.setDate(endDate.getDate() - 7)
-        break
-      case '1 Month':
-        startDate.setMonth(endDate.getMonth() - 1)
-        break
-      case '6 Months':
-        startDate.setMonth(endDate.getMonth() - 6)
-        break
-      case '1 Year':
-        startDate.setFullYear(endDate.getFullYear() - 1)
-        break
-    }
 
     // Split keywords by space and filter out empty strings
     const keywordArray = keywords.split(' ').filter(word => word.trim() !== '')
@@ -110,41 +99,93 @@ export default function Home() {
         <EmailCapture onSuccess={() => setIsLoggedIn(true)} />
       ) : (
         <>
-          <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 justify-center items-end mb-8">
-            <Input
-              placeholder="Keywords"
-              value={keywords}
-              onChange={(e) => setKeywords(e.target.value)}
-              className="md:w-1/4"
-            />
-            <Input
-              placeholder="X List ID"
-              value={listID}
-              onChange={(e) => setListID(e.target.value)}
-              className="md:w-1/4"
-            />
-            <Input
-              placeholder="Min Likes"
-              type="number"
-              value={minLikes}
-              onChange={(e) => setMinLikes(e.target.value)}
-              className="md:w-36"
-            />
-            <Select value={timePeriod} onValueChange={setTimePeriod}>
-              <SelectTrigger className="md:w-48">
-                <SelectValue placeholder="Select time period" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1 Day">1 Day</SelectItem>
-                <SelectItem value="7 Days">7 Days</SelectItem>
-                <SelectItem value="1 Month">1 month</SelectItem>
-                <SelectItem value="6 Months">6 months</SelectItem>
-                <SelectItem value="1 Year">1 Year</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button onClick={handleSearch} disabled={isLoading}>
-              {isLoading ? 'Searching...' : 'Search'}
-            </Button>
+          <div className="flex flex-col space-y-4 justify-center items-center mb-8 max-w-3xl mx-auto">
+            <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 w-full">
+              <Input
+                placeholder="Keywords"
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
+                className="md:w-1/3"
+              />
+              <Input
+                placeholder="X List ID"
+                value={listID}
+                onChange={(e) => setListID(e.target.value)}
+                className="md:w-1/3"
+              />
+              <Input
+                placeholder="Min Likes"
+                type="number"
+                value={minLikes}
+                onChange={(e) => setMinLikes(e.target.value)}
+                className="md:w-1/3"
+              />
+            </div>
+            <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 w-full">
+              <div className="flex flex-col space-y-2 md:w-1/3">
+                <span className="text-sm font-medium">Start Date</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !startDate && "text-muted-foreground"
+                      )}
+                    >
+                      {startDate ? (
+                        format(startDate, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={startDate}
+                      onSelect={(date) => setStartDate(date || subDays(new Date(), 7))}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="flex flex-col space-y-2 md:w-1/3">
+                <span className="text-sm font-medium">End Date</span>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !endDate && "text-muted-foreground"
+                      )}
+                    >
+                      {endDate ? (
+                        format(endDate, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={endDate}
+                      onSelect={(date) => setEndDate(date || new Date())}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="flex flex-col justify-end md:w-1/3">
+                <Button onClick={handleSearch} disabled={isLoading} className="w-full h-10">
+                  {isLoading ? 'Searching...' : 'Search'}
+                </Button>
+              </div>
+            </div>
           </div>
           
           {error && <p className="text-red-500 text-center">{error}</p>}
