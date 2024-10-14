@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Tweet } from 'rettiwt-api';
+import { Tweet as ReactTweet } from 'react-tweet';
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Heart, MessageCircle, Repeat, Eye, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -62,17 +64,6 @@ export function TweetTable({ tweets }: TweetTableProps) {
             </Button>
           </TableHead>
           <TableHead>
-            <Button variant="ghost" onClick={() => handleSort('tweetBy.userName')}>
-              Username <SortIcon columnKey="tweetBy.userName" />
-            </Button>
-          </TableHead>
-          <TableHead>Tweet URL</TableHead>
-          <TableHead>
-            <Button variant="ghost" onClick={() => handleSort('createdAt')}>
-              Date <SortIcon columnKey="createdAt" />
-            </Button>
-          </TableHead>
-          <TableHead>
             <Button variant="ghost" onClick={() => handleSort('likeCount')}>
               Likes <SortIcon columnKey="likeCount" />
             </Button>
@@ -97,18 +88,9 @@ export function TweetTable({ tweets }: TweetTableProps) {
       <TableBody>
         {sortedTweets.map((tweet) => (
           <TableRow key={tweet.id}>
-            <TableCell className="font-medium">{tweet.fullText}</TableCell>
-            <TableCell>
-              <Link href={`https://twitter.com/${tweet.tweetBy.userName}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                @{tweet.tweetBy.userName}
-              </Link>
+            <TableCell className="font-medium">
+              <ReactTweet id={tweet.id} />
             </TableCell>
-            <TableCell>
-              <Link href={`https://twitter.com/${tweet.tweetBy.userName}/status/${tweet.id}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                View Tweet
-              </Link>
-            </TableCell>
-            <TableCell>{new Date(tweet.createdAt).toLocaleString()}</TableCell>
             <TableCell>
               <div className="flex items-center gap-1">
                 <Heart className="h-4 w-4 text-red-500" />
