@@ -60,7 +60,7 @@ export function TweetTable({ tweets }: TweetTableProps) {
         <TableRow>
           <TableHead className="w-[300px]">
             <Button variant="ghost" onClick={() => handleSort('fullText')}>
-              Tweet Text <SortIcon columnKey="fullText" />
+              Tweet <SortIcon columnKey="fullText" />
             </Button>
           </TableHead>
           <TableHead>
