@@ -37,6 +37,8 @@ export default function Home() {
   const [minLikes, setMinLikes] = useState('')
   const [startDate, setStartDate] = useState<Date>(subDays(new Date(), 7))
   const [endDate, setEndDate] = useState<Date>(new Date())
+  const [startMonth, setStartMonth] = useState<Date>(startDate)
+  const [endMonth, setEndMonth] = useState<Date>(endDate)
   const [tweets, setTweets] = useState<Tweet[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
@@ -145,7 +147,12 @@ export default function Home() {
                     <Calendar
                       mode="single"
                       selected={startDate}
-                      onSelect={(date) => setStartDate(date || subDays(new Date(), 7))}
+                      onSelect={(date) => {
+                        setStartDate(date || subDays(new Date(), 7))
+                        setStartMonth(date || subDays(new Date(), 7))
+                      }}
+                      month={startMonth}
+                      onMonthChange={setStartMonth}
                       initialFocus
                     />
                   </PopoverContent>
@@ -174,7 +181,12 @@ export default function Home() {
                     <Calendar
                       mode="single"
                       selected={endDate}
-                      onSelect={(date) => setEndDate(date || new Date())}
+                      onSelect={(date) => {
+                        setEndDate(date || new Date())
+                        setEndMonth(date || new Date())
+                      }}
+                      month={endMonth}
+                      onMonthChange={setEndMonth}
                       initialFocus
                     />
                   </PopoverContent>
