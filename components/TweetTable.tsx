@@ -58,59 +58,69 @@ export function TweetTable({ tweets }: TweetTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[300px]">
-              Tweet
+          <TableHead className="w-[250px] min-w-[275px] max-w-[300px]">
+            <div className="text-center">Tweet</div>
           </TableHead>
-          <TableHead>
-            <Button variant="ghost" onClick={() => handleSort('likeCount')}>
-              Likes <SortIcon columnKey="likeCount" />
-            </Button>
+          <TableHead className="w-10">
+            <div className="flex justify-center">
+              <Button variant="ghost" onClick={() => handleSort('likeCount')}>
+                Likes <SortIcon columnKey="likeCount" />
+              </Button>
+            </div>
           </TableHead>
-          <TableHead>
-            <Button variant="ghost" onClick={() => handleSort('retweetCount')}>
-              Retweets <SortIcon columnKey="retweetCount" />
-            </Button>
+          <TableHead className="w-20">
+            <div className="flex justify-center">
+              <Button variant="ghost" onClick={() => handleSort('retweetCount')}>
+                Retweets <SortIcon columnKey="retweetCount" />
+              </Button>
+            </div>
           </TableHead>
-          <TableHead>
-            <Button variant="ghost" onClick={() => handleSort('viewCount')}>
-              Views <SortIcon columnKey="viewCount" />
-            </Button>
+          <TableHead className="w-20">
+            <div className="flex justify-center">
+              <Button variant="ghost" onClick={() => handleSort('viewCount')}>
+                Views <SortIcon columnKey="viewCount" />
+              </Button>
+            </div>
           </TableHead>
-          <TableHead>
-            <Button variant="ghost" onClick={() => handleSort('replyCount')}>
-              Comments <SortIcon columnKey="replyCount" />
-            </Button>
+          <TableHead className="w-20">
+            <div className="flex justify-center">
+              <Button variant="ghost" onClick={() => handleSort('replyCount')}>
+                Comments <SortIcon columnKey="replyCount" />
+              </Button>
+            </div>
           </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {sortedTweets.map((tweet) => (
           <TableRow key={tweet.id}>
-            <TableCell className="font-medium">
-              <ReactTweet id={tweet.id} />
+            <TableCell className="font-medium w-[300px] min-w-[250px] max-w-[400px]">
+              <div className="flex justify-center">
+                <ReactTweet id={tweet.id} />
+              </div>
             </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-1">
+            <TableCell className="text-center w-10">
+              <div className="flex flex-col items-center">
                 <Heart className="h-4 w-4 text-red-500" />
-                {tweet.likeCount}
+                <span>{tweet.likeCount}</span>
               </div>
             </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-1">
+            <TableCell className="text-center w-20">
+              <div className="flex flex-col items-center">
                 <Repeat className="h-4 w-4 text-green-500" />
-                {tweet.retweetCount}
+                <span>{tweet.retweetCount}</span>
               </div>
             </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-1">
+            <TableCell className="text-center w-20">
+              <div className="flex flex-col items-center">
                 <Eye className="h-4 w-4 text-blue-500" />
-                {tweet.viewCount}
+                <span>{tweet.viewCount}</span>
               </div>
             </TableCell>
-            <TableCell>
-              <div className="flex items-center gap-1">
+            <TableCell className="text-center w-20">
+              <div className="flex flex-col items-center">
                 <MessageCircle className="h-4 w-4 text-purple-500" />
-                {tweet.replyCount}
+                <span>{tweet.replyCount}</span>
               </div>
             </TableCell>
           </TableRow>
