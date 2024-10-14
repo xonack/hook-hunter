@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Rettiwt, Tweet, TweetFilter } from 'rettiwt-api';
+import { Rettiwt, Tweet, TweetFilter, ESearchResultType } from 'rettiwt-api';
 
 
 export async function POST(request: Request) {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const tweetsList: Tweet[] = [];
     while (tweetsList.length < 100) {
       try {
-        const tweets = await rettiwt.tweet.search(filter, 20, nextData);
+        const tweets = await rettiwt.tweet.search(filter, 20, nextData, ESearchResultType.TOP);
         nextData = tweets.next.value;
         tweetsList.push(...tweets.list);
         if (tweets.next.value === null || tweets.list.length === 0) {

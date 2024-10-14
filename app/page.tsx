@@ -56,8 +56,11 @@ export default function Home() {
       case '7 Days':
         startDate.setDate(endDate.getDate() - 7)
         break
-      case '21 Days':
-        startDate.setDate(endDate.getDate() - 21)
+      case '1 Month':
+        startDate.setMonth(endDate.getMonth() - 1)
+        break
+      case '6 Months':
+        startDate.setMonth(endDate.getMonth() - 6)
         break
       case '1 Year':
         startDate.setFullYear(endDate.getFullYear() - 1)
@@ -69,6 +72,8 @@ export default function Home() {
     .map(word => word.replace(/,/g, ''))
 
     try {
+      console.log('Start Date:', startDate.toISOString());
+      console.log('End Date:', endDate.toISOString());
       const response = await fetch('/api/tweets', {
         method: 'POST',
         headers: {
@@ -132,7 +137,8 @@ export default function Home() {
               <SelectContent>
                 <SelectItem value="1 Day">1 Day</SelectItem>
                 <SelectItem value="7 Days">7 Days</SelectItem>
-                <SelectItem value="21 Days">21 Days</SelectItem>
+                <SelectItem value="1 Month">1 month</SelectItem>
+                <SelectItem value="6 Months">6 months</SelectItem>
                 <SelectItem value="1 Year">1 Year</SelectItem>
               </SelectContent>
             </Select>
