@@ -204,7 +204,7 @@ export default function Home() {
           {error && <p className="text-red-500 text-center">{error}</p>}
           {tweets.length > 0 ? (
             <div className="mt-8">
-              <h2 className="text-xl font-semibold mt-4mb-4">Search Results</h2>
+              <h2 className="text-xl font-semibold mt-4 mb-4">Search Results</h2>
               <TweetTable tweets={tweets} />
             </div>
           ) : (
