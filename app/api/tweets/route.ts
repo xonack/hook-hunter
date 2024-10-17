@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   try {
     let nextData = '';
     const tweetsList: Tweet[] = [];
-    while (tweetsList.length < 100) {
+    while (tweetsList.length < 50) {
       try {
         const tweets = await rettiwt.tweet.search(filter, 20, nextData, ESearchResultType.TOP);
         nextData = tweets.next.value;
