@@ -59,7 +59,7 @@ export function TweetTable({ tweets }: TweetTableProps) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[300px]">
+          <TableHead className="w-[300px] sm:w-[200px]">
             <div className="text-center">Tweet</div>
           </TableHead>
           <TableHead className="w-10">
@@ -95,9 +95,9 @@ export function TweetTable({ tweets }: TweetTableProps) {
       <TableBody>
         {sortedTweets.map((tweet) => (
           <TableRow key={tweet.id}>
-            <TableCell className="font-medium w-[300px]">
+            <TableCell className="font-medium w-[300px] sm:w-[200px]">
               <div className="flex justify-center">
-                <div className="w-full max-w-[300px]">
+                <div className="w-full max-w-[300px] sm:max-w-[200px]">
                   <MyComponent id={tweet.id} />
                 </div>
               </div>
