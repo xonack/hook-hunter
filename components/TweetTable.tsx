@@ -6,6 +6,7 @@ import { Tweet as ReactTweet } from 'react-tweet';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Heart, MessageCircle, Repeat, Eye, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MyComponent } from './MyComponent';
 
 interface TweetTableProps {
   tweets: Tweet[];
@@ -96,7 +97,8 @@ export function TweetTable({ tweets }: TweetTableProps) {
           <TableRow key={tweet.id}>
             <TableCell className="font-medium w-[300px] min-w-[250px] max-w-[400px]">
               <div className="flex justify-center">
-                <ReactTweet id={tweet.id} />
+                {/* <ReactTweet id={tweet.id} /> */}
+                <MyComponent id={tweet.id} />
               </div>
             </TableCell>
             <TableCell className="text-center w-10">
