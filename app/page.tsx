@@ -94,6 +94,11 @@ export default function Home() {
     }
   }
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    handleSearch()
+  }
+
   return (
     <main className="container mx-auto px-4 py-8">
       <h1 className="text-6xl font-bold mb-32 text-center">Hook Hunter</h1>
@@ -102,7 +107,7 @@ export default function Home() {
         <EmailCapture onSuccess={() => setIsLoggedIn(true)} />
       ) : (
         <>
-          <div className="flex flex-col space-y-4 justify-center items-center mb-8 max-w-3xl mx-auto">
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4 justify-center items-center mb-8 max-w-3xl mx-auto">
             <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 w-full">
               <Input
                 placeholder="Keywords"
@@ -193,13 +198,13 @@ export default function Home() {
                   </PopoverContent>
                 </Popover>
               </div>
-              <div className="flex flex-col justify-end md:w-1/3">
-                <Button onClick={handleSearch} disabled={isLoading} className="w-full h-10">
+              <div className="flex flex-col justify-end md:w-1/3 w-full">
+                <Button type="submit" disabled={isLoading} className="w-full h-10">
                   {isLoading ? 'Searching...' : 'Search'}
                 </Button>
               </div>
             </div>
-          </div>
+          </form>
           
           {error && <p className="text-red-500 text-center">{error}</p>}
           {tweets.length > 0 ? (
