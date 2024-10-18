@@ -29,7 +29,9 @@ const MyTweetContent = ({ tweet, components }: { tweet: Tweet; components?: Twit
       {enrichedTweet.in_reply_to_status_id_str && <TweetInReplyTo tweet={enrichedTweet} />}
       <TweetBody tweet={enrichedTweet} />
       {enrichedTweet.mediaDetails?.length ? (
-        <TweetMedia tweet={enrichedTweet} components={components} />
+        <div className="max-w-[250px] max-h-[500px] overflow-hidden mx-auto">
+          <TweetMedia tweet={enrichedTweet} components={components} />
+        </div>
       ) : null}
       {enrichedTweet.quoted_tweet && <QuotedTweet tweet={enrichedTweet.quoted_tweet} />}
       <TweetInfo tweet={enrichedTweet} />
